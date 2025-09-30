@@ -1,8 +1,11 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, useWindowDimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import CTAButton from './CTAButton';
 
 export default function EnergyStackSection() {
+  const { width } = useWindowDimensions();
+  const isMobile = width < 570;
+
   const cards = [
     {
       title: 'Installers',
@@ -36,27 +39,30 @@ export default function EnergyStackSection() {
 
   return (
     <View style={styles.section}>
-      <Text style={styles.heading}>Upgrade Your Energy Stack</Text>
-      <View style={styles.grid}>
-        {cards.map((card) => (
-          <LinearGradient
-            key={card.title}
-            colors={card.colors}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.card}
-          >
-            <View style={styles.cardContent}>
-              <View>
-                <Text style={styles.cardTitle}>{card.title}</Text>
-                <Text style={styles.cardBody}>{card.description}</Text>
+      {/* ✅ Constrained container */}
+      <View style={styles.container}>
+        <Text style={styles.heading}>Upgrade Your Energy Stack</Text>
+        <View style={[styles.grid, isMobile && styles.gridMobile]}>
+          {cards.map((card) => (
+            <LinearGradient
+              key={card.title}
+              colors={card.colors}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={[styles.card, isMobile && styles.cardMobile]}
+            >
+              <View style={styles.cardContent}>
+                <View>
+                  <Text style={styles.cardTitle}>{card.title}</Text>
+                  <Text style={styles.cardBody}>{card.description}</Text>
+                </View>
+                <View style={styles.buttonWrapper}>
+                  <CTAButton title={card.button} onPress={() => { }} kind="card" />
+                </View>
               </View>
-              <View style={styles.buttonWrapper}>
-                <CTAButton title={card.button} onPress={() => { }} kind="card" />
-              </View>
-            </View>
-          </LinearGradient>
-        ))}
+            </LinearGradient>
+          ))}
+        </View>
       </View>
     </View>
   );
@@ -68,41 +74,52 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     backgroundColor: '#ffffff',
   },
+  container: {
+    maxWidth: 1000, // ✅ constrain width
+    width: '100%',
+    alignSelf: 'center',
+  },
   heading: {
-    fontSize: 35,
-    fontWeight: '500',
+    fontSize: 26,
+    fontWeight: '700',
     color: '#C34B36',
-    marginBottom: 42,
-    marginTop: 22,
+    marginBottom: 36,
+    marginTop: 12,
     textAlign: 'center',
   },
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     gap: 20,
   },
+  gridMobile: {
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
   card: {
-    width: '48%',
-    borderRadius: 8,
+    width: '45%',
+    borderRadius: 10,
     padding: 20,
-    marginBottom: 20,
+  },
+  cardMobile: {
+    width: '95%',
   },
   cardContent: {
     flex: 1,
-    justifyContent: 'space-between', // pushes button to bottom
+    justifyContent: 'space-between',
   },
   cardTitle: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: '800',
     color: '#fff',
     marginBottom: 8,
   },
   cardBody: {
-    fontSize: 14,
-    color: 'rgba(255,255,255,0.9)', // softer white
+    fontSize: 11,
+    color: 'rgba(255,255,255,0.9)',
     lineHeight: 20,
-    marginBottom: 20,
+    marginBottom: 10,
   },
   buttonWrapper: {
     alignItems: 'center',

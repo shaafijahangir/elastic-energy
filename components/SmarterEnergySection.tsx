@@ -1,17 +1,23 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, useWindowDimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import CTAButton from './CTAButton';
 
 /**
- * The “Build Smarter Energy Systems” call-out from the Elastic Energy site.
- * Compact typography and buttons to closely match the original design.
+ * Build Smarter Energy Systems
+ * - Desktop: side-by-side buttons (Outline + Filled)
+ * - Mobile: stacked buttons (Outline + Filled), no dark/black variant
+ * - Gradient background lives on the section
  */
 export default function SmarterEnergySection() {
+  const { width } = useWindowDimensions();
+  const isMobile = width < 430;
+
   return (
     <LinearGradient
       colors={['#e65837', '#f0ddcc']}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 0 }}
+      locations={[0, 10.8]}
       style={styles.wrapper}
     >
       <View style={styles.content}>
@@ -21,7 +27,10 @@ export default function SmarterEnergySection() {
           risk and lasting customer value. Whether you are an installer, TPO, aggregator or
           hyperscaler, Elastic provides the infrastructure layer to grow faster and earn more.
         </Text>
-        <View style={styles.buttonsRow}>
+
+        {/* Buttons */}
+        <View style={[styles.buttonsRow, isMobile && styles.buttonsRowMobile]}>
+          {/* Mobile & Desktop both use the 'outline' system (no black) */}
           <CTAButton title="Request a Demo" onPress={() => { }} kind="outline" />
           <CTAButton title="Partner With Us" onPress={() => { }} kind="filled" />
         </View>
@@ -57,5 +66,11 @@ const styles = StyleSheet.create({
   buttonsRow: {
     flexDirection: 'row',
     gap: 12,
+  },
+  buttonsRowMobile: {
+    flexDirection: 'column',
+    width: '100%',
+    gap: 12,
+    alignItems: 'stretch',
   },
 });

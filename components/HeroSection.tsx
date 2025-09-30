@@ -1,7 +1,10 @@
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, useWindowDimensions } from 'react-native';
 import CTAButton from './CTAButton';
 
 export default function HeroSection() {
+  const { width } = useWindowDimensions();
+  const isMobile = width < 500;
+
   return (
     <View style={styles.wrapper}>
       {/* Top: headline + subhead + buttons */}
@@ -11,7 +14,7 @@ export default function HeroSection() {
           Elastic Energy makes energy assets orchestrated, verifiable and revenue-ready,
           from homes to hyperscalers.
         </Text>
-        <View style={styles.buttonsRow}>
+        <View style={[styles.buttonsRow, isMobile && styles.buttonsRowMobile]}>
           <CTAButton title="Request a Demo" onPress={() => { }} kind="filled" />
           <CTAButton title="How it works" onPress={() => { }} kind="dark" />
         </View>
@@ -37,6 +40,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 40,
     paddingHorizontal: 24,
+    paddingBottom: 100,
   },
   headline: {
     fontSize: 42,
@@ -44,7 +48,7 @@ const styles = StyleSheet.create({
     color: '#C34B36',
     textAlign: 'center',
     marginBottom: 12,
-    marginTop: 18,
+    marginTop: 80,
   },
   subhead: {
     fontSize: 16,
@@ -57,6 +61,12 @@ const styles = StyleSheet.create({
   buttonsRow: {
     flexDirection: 'row',
     gap: 16,
+  },
+  buttonsRowMobile: {
+    flexDirection: 'column', // ✅ stack vertically
+    width: '100%',
+    gap: 12,
+    alignItems: 'center',
   },
   imageSection: {
     backgroundColor: '#FAF6EF', // cream background for image

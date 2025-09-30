@@ -1,7 +1,10 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, useWindowDimensions } from 'react-native';
 import { FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 
 export default function PlatformCapabilities() {
+  const { width } = useWindowDimensions();
+  const isMobile = width < 430;
+
   const items = [
     {
       title: 'Instant Orchestration',
@@ -45,12 +48,12 @@ export default function PlatformCapabilities() {
     <View style={styles.section}>
       <Text style={styles.heading}>Platform Capabilities</Text>
       <Text style={styles.subheading}>
-        Orchestrate distributed energy systems in real time across sites, fleets and portfolios. Elastic connects
-        devices, automates control and unlocks new revenue.
+        Orchestrate distributed energy systems in real time across sites, fleets and portfolios.
+        Elastic connects devices, automates control and unlocks new revenue.
       </Text>
-      <View style={styles.grid}>
+      <View style={[styles.grid, isMobile && styles.gridMobile]}>
         {items.map((item) => (
-          <View key={item.title} style={styles.card}>
+          <View key={item.title} style={[styles.card, isMobile && styles.cardMobile]}>
             <View style={styles.iconContainer}>{item.icon}</View>
             <Text style={styles.cardTitle}>{item.title}</Text>
             <Text style={styles.cardDescription}>{item.description}</Text>
@@ -65,10 +68,10 @@ const styles = StyleSheet.create({
   section: {
     paddingVertical: 32,
     paddingHorizontal: 20,
-    backgroundColor: '#f8fafc',
+    backgroundColor: '#f5f5f5',
   },
   heading: {
-    fontSize: 22,
+    fontSize: 23,
     fontWeight: '700',
     color: '#111',
     marginBottom: 8,
@@ -80,17 +83,24 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 18,
     marginBottom: 32,
-    maxWidth: 640,
+    maxWidth: 620,
     alignSelf: 'center',
   },
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    justifyContent: 'center',   // ✅ keep cards clustered
+    gap: 15,                    // ✅ spacing between them
+    maxWidth: 1000,             // ✅ constrain overall width
+    alignSelf: 'center',        // ✅ center the whole grid
+  },
+  gridMobile: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   card: {
-    width: '30%',
-    minWidth: 240,
+    width: 280,
     backgroundColor: '#fff',
     borderRadius: 12,
     padding: 20,
@@ -102,23 +112,26 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 1,
   },
+  cardMobile: {
+    width: '90%',
+  },
   iconContainer: {
     width: 42,
     height: 42,
     borderRadius: 10,
-    backgroundColor: '#C34B36', // lighter brand red instead of #B04630
+    backgroundColor: '#C34B36',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 12,
   },
   cardTitle: {
-    fontSize: 16,
+    fontSize: 13,
     fontWeight: '600',
     color: '#111',
     marginBottom: 6,
   },
   cardDescription: {
-    fontSize: 13,
+    fontSize: 11,
     color: '#444',
     lineHeight: 18,
   },

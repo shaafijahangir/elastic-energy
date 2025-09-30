@@ -1,97 +1,72 @@
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import { useRouter } from 'expo-router';
-import { FontAwesome } from '@expo/vector-icons';
+import { View, Text, StyleSheet, Image, useWindowDimensions } from 'react-native';
+import { FontAwesome6 } from '@expo/vector-icons';
 
 export default function Footer() {
-    const router = useRouter();
+    const { width } = useWindowDimensions();
+    const isMobile = width < 650;
 
     return (
-        <View style={styles.root}>
-            {/* Top section */}
-            <View style={styles.topRow}>
-                {/* Left column (logo + tagline + socials) */}
-                <View style={styles.leftCol}>
-                    <View style={styles.brandRow}>
-                        <Image
-                            source={require('../assets/elastic-energy-logo.png')}
-                            style={styles.logo}
-                            resizeMode="contain"
-                        />
-                        <Text style={styles.brand}>Elastic Energy</Text>
+        <View style={styles.footer}>
+            {/* Constrain everything in a centered container */}
+            <View style={styles.container}>
+                {/* Top Row: Logo + Description + Links */}
+                <View style={[styles.topRow, isMobile && styles.topRowMobile]}>
+                    {/* Logo + Company Info */}
+                    <View style={styles.companyInfo}>
+                        <View style={styles.logoRow}>
+                            <Image
+                                source={require('../assets/elastic-energy-logo.png')}
+                                style={styles.logo}
+                                resizeMode="contain"
+                            />
+                            <Text style={styles.companyName}>Elastic Energy</Text>
+                        </View>
+                        <Text style={styles.description}>
+                            Elastic Energy unlocks capacity everywhere, turning distributed
+                            assets into reliable, revenue-generating infrastructure.
+                        </Text>
+                        <View style={styles.socialRow}>
+                            <FontAwesome6 name="x-twitter" size={15} color="#ccc" />
+                            <FontAwesome6 name="linkedin" size={15} color="#ccc" />
+                        </View>
                     </View>
-                    <Text style={styles.tagline}>
-                        Elastic Energy unlocks capacity everywhere, turning distributed assets
-                        into reliable, revenue-generating infrastructure.
-                    </Text>
-                    <View style={styles.socialRow}>
-                        <TouchableOpacity onPress={() => { }}>
-                            <FontAwesome name="twitter" size={18} color="#fff" />
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => { }}>
-                            <FontAwesome name="linkedin" size={18} color="#fff" />
-                        </TouchableOpacity>
-                    </View>
-                </View>
 
-                {/* Right column (grouped links) */}
-                <View style={styles.rightCol}>
-                    <View style={styles.col}>
-                        <Text style={styles.heading}>Platform</Text>
-                        <TouchableOpacity onPress={() => router.push('/platform')}>
+                    {/* Navigation Links */}
+                    <View style={[styles.linksRow, isMobile && styles.linksRowMobile]}>
+                        <View style={styles.linkGroup}>
+                            <Text style={styles.linkHeading}>PLATFORM</Text>
                             <Text style={styles.link}>Overview</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => router.push('/product')}>
                             <Text style={styles.link}>Energy Router</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => router.push('/platform')}>
                             <Text style={styles.link}>Energy Cloud</Text>
-                        </TouchableOpacity>
-                    </View>
-
-                    <View style={styles.col}>
-                        <Text style={styles.heading}>Solutions</Text>
-                        <TouchableOpacity onPress={() => router.push('/installers')}>
+                        </View>
+                        <View style={styles.linkGroup}>
+                            <Text style={styles.linkHeading}>SOLUTIONS</Text>
                             <Text style={styles.link}>For Installers</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => router.push('/asset-owners')}>
                             <Text style={styles.link}>For Asset Owners</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => router.push('/aggregators')}>
                             <Text style={styles.link}>For Aggregators</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => router.push('/hyperscalers')}>
                             <Text style={styles.link}>For Hyperscalers</Text>
-                        </TouchableOpacity>
-                    </View>
-
-                    <View style={styles.col}>
-                        <Text style={styles.heading}>Company</Text>
-                        <TouchableOpacity onPress={() => router.push('/about')}>
+                        </View>
+                        <View style={styles.linkGroup}>
+                            <Text style={styles.linkHeading}>COMPANY</Text>
                             <Text style={styles.link}>About Us</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => router.push('/careers')}>
                             <Text style={styles.link}>Careers</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => router.push('/partners')}>
                             <Text style={styles.link}>Partners</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => router.push('/contact')}>
                             <Text style={styles.link}>Contact</Text>
-                        </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
-            </View>
 
-            {/* Bottom row */}
-            <View style={styles.bottomRow}>
-                <Text style={styles.copy}>© 2025 Elastic Energy, Inc. All rights reserved.</Text>
-                <View style={styles.bottomLinks}>
-                    <TouchableOpacity onPress={() => router.push('/privacy')}>
-                        <Text style={styles.link}>Privacy Policy</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => router.push('/terms')}>
-                        <Text style={styles.link}>Terms of Service</Text>
-                    </TouchableOpacity>
+                {/* Divider */}
+                <View style={styles.divider} />
+
+                {/* Bottom Row: Copyright + Legal */}
+                <View style={[styles.bottomRow, isMobile && styles.bottomRowMobile]}>
+                    <Text style={styles.copy}>© 2025 Elastic Energy, Inc. All rights reserved.</Text>
+                    <View style={styles.bottomLinks}>
+                        <Text style={styles.bottomLinkText}>Privacy Policy</Text>
+                        <View style={styles.dot} />
+                        <Text style={styles.bottomLinkText}>Terms of Service</Text>
+                    </View>
                 </View>
             </View>
         </View>
@@ -99,96 +74,117 @@ export default function Footer() {
 }
 
 const styles = StyleSheet.create({
-    root: {
-        paddingVertical: 24,
-        paddingHorizontal: 32,
+    footer: {
         backgroundColor: '#111',
+        paddingVertical: 32,
+        paddingHorizontal: 16,
     },
-
+    container: {
+        width: '100%',
+        maxWidth: 1000,       // ✅ keeps content centered on wide screens
+        alignSelf: 'center',  // ✅ centers the container itself
+    },
     topRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'flex-start',
-        marginBottom: 20,
+        marginBottom: 24,
     },
-
-    leftCol: {
+    topRowMobile: {
+        flexDirection: 'column',
+        gap: 24,
+    },
+    companyInfo: {
         flex: 1,
-        paddingRight: 20,
+        marginRight: 32,
     },
-
-    rightCol: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        gap: 10,
-        flexShrink: 0,
-    },
-
-    brandRow: {
+    logoRow: {
         flexDirection: 'row',
         alignItems: 'center',
         marginBottom: 8,
     },
-
     logo: {
         width: 28,
         height: 28,
-        marginRight: 6,
+        marginRight: 8,
     },
-
-    brand: {
+    companyName: {
+        fontWeight: '700',
         color: '#fff',
         fontSize: 15,
-        fontWeight: '700',
     },
-
-    tagline: {
+    description: {
         color: '#aaa',
-        fontSize: 12,
+        fontSize: 13,
         lineHeight: 18,
-        marginBottom: 10,
-        maxWidth: 360,
+        marginBottom: 12,
+        maxWidth: 380,
     },
-
     socialRow: {
         flexDirection: 'row',
-        gap: 14,
+        gap: 12,
     },
-
-    col: {
-        gap: 4,
-        minWidth: 110,
-    },
-
-    heading: {
-        color: '#fff',
-        fontWeight: '700',
-        marginBottom: 4,
-        fontSize: 13,
-    },
-
-    link: {
+    socialIcon: {
         color: '#ccc',
-        fontSize: 13,
+        fontSize: 15,
     },
-
+    linksRow: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end', // 👈 pushes the whole group to the right
+        gap: 40,
+    },
+    linksRowMobile: {
+        flexDirection: 'column',
+        alignItems: 'flex-start', // 👈 for mobile, stack and align left
+        gap: 20,
+        paddingTop: 15,
+    },
+    linkGroup: {
+        flex: 1,
+        minWidth: 90,
+    },
+    linkHeading: {
+        fontSize: 11,
+        fontWeight: '700',
+        color: '#fff',
+        marginBottom: 8,
+    },
+    link: {
+        fontSize: 11.5,
+        color: '#ccc',
+        marginBottom: 6,
+    },
+    divider: {
+        height: 1,
+        backgroundColor: '#222',
+        marginVertical: 16,
+    },
     bottomRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        borderTopWidth: 1,
-        borderTopColor: '#333',
-        paddingTop: 12,
-        marginTop: 20,
     },
-
+    bottomRowMobile: {
+        flexDirection: 'column',
+        gap: 12,
+        alignItems: 'center',
+    },
     copy: {
-        color: '#777',
-        fontSize: 11,
+        color: '#888',
+        fontSize: 12,
     },
-
     bottomLinks: {
         flexDirection: 'row',
-        gap: 18,
+        alignItems: 'center',
+        gap: 10,
+    },
+    bottomLinkText: {
+        color: '#9CA3AF',
+        fontSize: 12,
+    },
+    dot: {
+        width: 4,
+        height: 4,
+        borderRadius: 2,
+        backgroundColor: '#374151',
     },
 });

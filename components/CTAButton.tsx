@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     filled: { backgroundColor: '#B04630' },
     outline: { backgroundColor: '#fff', borderWidth: 1, borderColor: '#B04630' },
     dark: { backgroundColor: '#1A2A3A' },
-    text: { fontWeight: '700', fontSize: 13 },
+    text: { fontWeight: '700', fontSize: 12 },
     textFilled: { color: '#fff' },
     textOutline: { color: '#B04630' },
     textDark: { color: '#fff' },
